@@ -1,0 +1,121 @@
+/*!
+ * Start Bootstrap - Portfolio Item (http://startbootstrap.com/)
+ * Copyright 2013-2016 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
+ */
+
+body {
+    padding-top: 70px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+}
+
+.portfolio-item {
+    margin-bottom: 25px;
+}
+
+footer {
+    margin: 50px 0;
+}
+
+.justificado {
+    text-align: justify;
+}
+
+.dv_icpunto {
+    background-image: url(../img/punto.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 18px;
+    width: 18px;
+}
+
+.dv_iclinea {
+    background-image: url("../img/linea.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 18px;
+    width: 18px;
+}
+
+.dv_icpoligono {
+    background-image: url("../img/poligono.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 18px;
+    width: 18px;
+}
+
+.matrizTituloPadre {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.Padre {
+    background-color: #fffece;
+}
+
+td.jsgrid-cell.blueColumn {
+    width: 180px;
+    background-color: rgb(140, 173, 232);
+}
+
+td.jsgrid-cell.negrita {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+td.jsgrid-cell.negrita {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+td.custom-cell.jsgrid-cell.jsgrid-align-center {
+    background-color: #d0cece;
+}
+
+@media (min-width: 768px) {
+    .bs-glyphicons .glyphicon {
+        margin-bottom: 10px;
+        font-size: 97px;
+    }
+
+    .bs-glyphicons li {
+        width: 33.5%;
+        font-size: 20px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .bs-glyphicons .glyphicon {
+        margin-bottom: 10px;
+        font-size: 97px;
+    }
+
+    .bs-glyphicons li {
+        width: 28.5%;
+        font-size: 20px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .bs-glyphicons li {
+        width: 20.5%;
+        font-size: 20px;
+    }
+}
+
+
+@media (max-width: 767px) { 
+    .bs-glyphicons .glyphicon {
+        margin-bottom: 10px;
+        font-size: 50px;
+    }
+
+    .bs-glyphicons li {
+            width: 44.5%;
+            font-size: 20px;
+    }
+
+        .bs-glyphicons-list {
+        display:inline-flex;
+    }
+}

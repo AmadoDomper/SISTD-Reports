@@ -1,0 +1,65 @@
+﻿@{
+    ViewBag.Title = "Reportar Avance";
+}
+
+<link type="text/css" rel="stylesheet" href="~/Public/css/jsgrid.css" />
+<link type="text/css" rel="stylesheet" href="~/Public/css/jsgrid-theme.css" />
+
+<script type="text/javascript" src="~/Public/js/jsgrid.js"></script>
+
+<!-- Portfolio Item Heading -->
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Reportar avance</h1>
+    </div>
+</div>
+<!-- /.row -->
+
+<!-- Portfolio Item Row -->
+<div class="row">
+    <div class="col-lg-12">
+        <form id="frm" data-smk-icon="glyphicon-asterisk">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Plan Operativo</label>
+                        <select class="form-control" id="ddlplan" name="ddlplan" required></select>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label>Meta</label>
+                        <select class="form-control" id="ddlMeta" name="ddlMeta" required></select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Periodo</label>
+                        <select class="form-control" id="ddlPeriodo" name="ddlPeriodo" required>
+                            <option value="1">I Semestre</option>
+                            <option value="2">II Trimestre</option>
+                            <option value="3">III Trimestre</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8"></div>
+                <div class="col-md-2"></div>
+                <div class="col-md-2">
+                    <input type="button" class="btn btn-primary btn-block btn-fill" value="Buscar" id="btbuscar" name="btbuscar">
+                </div>
+            </div>
+            <div class="row">
+
+                    <div class="col-md-12">
+                        <h4>Resultados</h4>
+                        <div id="jsGrid"></div>
+                    </div>
+                </div>
+        </form>
+    </div>
+</div>
+
+<!--Pagina controlador de vista-->
+<script src="~/Public/js/content/publicacion/RegistrarAvance.js"></script>

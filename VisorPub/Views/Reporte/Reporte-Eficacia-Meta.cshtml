@@ -1,0 +1,73 @@
+﻿@{
+    ViewBag.Title = "Reporte Eficacia por Meta";
+}
+
+<link type="text/css" rel="stylesheet" href="~/Public/css/jsgrid.css" />
+<link type="text/css" rel="stylesheet" href="~/Public/css/jsgrid-theme.css" />
+
+<script type="text/javascript" src="~/Public/js/jsgrid.js"></script>
+
+<style type="text/css">
+.Azul td:nth-child(4){
+    background-color: #5d5dff;
+}
+
+.Amarillo td:nth-child(4){
+    background-color: #ffff51;
+}
+
+.Verde td:nth-child(4){
+    background-color: #15ab15;
+}
+
+.Rojo td:nth-child(4) {
+    background-color: #fd2929;
+}
+
+
+/*.my-row-custom-class td:nth-child(2) {
+    background: red;
+}*/
+
+
+</style>
+
+
+
+<!-- Portfolio Item Heading -->
+<div class="row">
+    <div class="col-lg-12">
+        <h2 class="page-header">Reporte de Eficacia por Meta</h2>
+    </div>
+</div>
+<!-- /.row -->
+<!-- Portfolio Item Row -->
+<div class="row">
+    <div class="col-lg-12">
+        <form id="frm" data-smk-icon="glyphicon-asterisk">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Periodo</label>
+                        <select class="form-control" id="ddlPeriodo" name="ddlPeriodo" required>
+                            <option value="1">I Semestre</option>
+                            <option value="2">III Trimestre</option>
+                            <option value="3">IV Trimestre</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="jsGrid"></div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@Html.Hidden("myUrl", Url.Action("ReporteEficaciaMetaLista", "Reporte"))
+
+
+<!--Pagina controlador de vista-->
+<script src="~/Public/js/content/publicacion/ReporteEficaciaMeta.js"></script>
