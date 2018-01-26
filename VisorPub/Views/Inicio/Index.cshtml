@@ -75,11 +75,13 @@
 
 
     $("#reporte").click(function () {
-        location.href = "/repsistd/Reporte/Index";
+        location.href = "@Url.Action("Index", "Reporte")";
+        //location.href = "/repsistd/Reporte/Index";
     });
 
     $("#repAvance").click(function () {
-        location.href = "/repsistd/Inicio/RegistrarAvance";
+        location.href = "@Url.Action("RegistrarAvance", "Inicio")";
+        //location.href = "/repsistd/Inicio/RegistrarAvance";
     });
 
 </script>

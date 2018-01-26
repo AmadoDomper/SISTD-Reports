@@ -9,11 +9,13 @@ $(document).ready(function () {
     });
 
     $('#frm #ddlplan').change(function () {
+
+        var url = $("#listarMetasDeResponsableMeta").val();
         var nPlanOpeId = $('#frm #ddlplan').val();
 
         if (nPlanOpeId != "") {
             $.fn.Conexion({
-                direccion: '/repsistd/Inicio/ListarMetasDeResponsableMeta',
+                direccion: url,
                 //direccion: '/Inicio/ListarMetasDeResponsableMeta',
                 bloqueo: true,
                 datos: { "PlanOperativoId": nPlanOpeId, "ResponsableMeta": Model.idUser },
@@ -41,10 +43,11 @@ $(document).ready(function () {
     $('#frm #btbuscar').click(function () {
         var nPlanOpeId = $('#ddlplan').val();
         var nInsMetaId = $('#ddlMeta').val();
+        var url = $("#listarMatrizPogramacion").val();
 
         if (nPlanOpeId != "" && (nInsMetaId != "" && nInsMetaId != null)) {
             $.fn.Conexion({
-                direccion: '/repsistd/Inicio/ListarMatrizPogramacion',
+                direccion: url,
                 //direccion: '/Inicio/ListarMatrizPogramacion',
                 bloqueo: true,
                 datos: { "InstanciaId": nInsMetaId, "PlanOperativoId": nPlanOpeId, "nPeriodo": $('#ddlPeriodo').val(), "nRespId": Model.idUser },
@@ -80,8 +83,10 @@ $(document).ready(function () {
 
 
     function OptenerEficaciaMeta() {
+        var url = $("#optenerIndicadores").val();
+
         $.fn.Conexion({
-            direccion: '/repsistd/Inicio/OptenerIndicadores',
+            direccion: url,
             //direccion: '/Inicio/OptenerEficacia',
             bloqueo: true,
             datos: { "InstanciaId": $('#ddlMeta').val(), "nPeriodo": $('#ddlPeriodo').val() },
@@ -318,9 +323,10 @@ $(document).ready(function () {
                 var nMotivoRestraso3 = args.item.nMotivoRestraso3 ? args.item.nMotivoRestraso3 : 0;
                 var cLogro3 = args.item.cLogro3 ? args.item.cLogro3 : '';
 
+                var url = $("#registrarAvancePOI").val();
+
                 $.fn.Conexion({
-                    direccion: '/repsistd/Inicio/RegistrarAvancePOI',
-                    //direccion: '/Inicio/RegistrarAvancePOI',
+                    direccion: url,
                     bloqueo: false,
                     datos: {
                         "InstanciaId": InstanciaId,
