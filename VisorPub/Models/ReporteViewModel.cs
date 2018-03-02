@@ -11,5 +11,10 @@ namespace VisorPub.Models
         public List<Combo> lsMetas;
         public List<Combo> lsJefes;
         public List<Combo> lsAcEst;
+
+        public List<Combo> lsPOIs;
+
+        public List<Combo> lsAE;
+        public List<Combo> lsPeriodoCale;
     }
 }

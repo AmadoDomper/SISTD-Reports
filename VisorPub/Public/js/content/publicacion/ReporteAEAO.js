@@ -2,12 +2,58 @@
 
 $(document).ready(function () {
 
-    $('#frm #ddlAcEst').dropdowlist2({
+    $('#frm #ddlplan').dropdowlist2({
         dataShow: 'CText',
         dataValue: 'CValue',
         dataselect: 'CValue',
-        datalist: Model.lsAcEst
+        datalist: Model.lsPOIs
     });
+
+    $('#frm #ddlplan').change(function () {
+
+        var url = $("#listarActividadEstrategica").val();
+        var nPlanOpeId = $('#frm #ddlplan').val();
+
+        if (nPlanOpeId != "") {
+            $.fn.Conexion({
+                direccion: url,
+                bloqueo: false,
+                datos: { "PlanOperativoId": nPlanOpeId},
+                terminado: function (data) {
+                    $('#btbuscar').prop('disabled', '');
+                    data = JSON.parse(data);
+                        $('#ddlAcEst').dropdowlist2({
+                            dataShow: 'CText',
+                            dataValue: 'CValue',
+                            dataselect: 'CValue',
+                            datalist: data.lsAcEst
+                        });
+
+                        $('#ddlPeriodo').dropdowlist2({
+                            dataShow: 'CText',
+                            dataValue: 'CValue',
+                            dataselect: 'CValue',
+                            datalist: data.lsPeriodoCale
+                        });
+
+                        
+
+                }
+            });
+        }
+
+        setTimeout(function () {
+            $('#frm #btbuscar').click();
+        }, 500)
+
+        
+    });
+
+    $('#frm #ddlplan').change();
+
+    //$('#frm #ddlplan').change(function () {
+    //    $('#frm #btbuscar').click();
+    //});
 
     $('#frm #ddlAcEst').change(function () {
         $('#frm #btbuscar').click();
@@ -20,23 +66,25 @@ $(document).ready(function () {
     $('#frm #btbuscar').click(function () {
 
         var nAEId = -1;
+        var nPeriodo = 1;
 
         if ($('#ddlAcEst').val() != null) {
             nAEId = $('#ddlAcEst').val();
+            nPeriodo = $("#ddlPeriodo").val();
         }
-        Listar(nAEId);
+        Listar(nAEId, nPeriodo);
 
     });
 
-    function Listar(nAEId) {
+    function Listar(nAEId, nPeriodo) {
 
         var url = $("#listaRepActOpe").val();
-        var nPeriodo = $("#ddlPeriodo").val();
+        var nplanOpeId = $("#ddlplan").val();
 
         $.fn.Conexion({
             direccion: url,
             bloqueo: true,
-            datos: { "nAEId": nAEId, "nPeriodo": nPeriodo },
+            datos: { "nAEId": nAEId, "nPeriodo": nPeriodo, "nPlanOperativoId": nplanOpeId },
             terminado: function (data) {
                 var data = JSON.parse(data);
                 //console.log(data);

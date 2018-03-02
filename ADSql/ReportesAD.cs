@@ -275,11 +275,50 @@ namespace ADSql
             return ls;
         }
 
-        public List<ReporteAEAO> ListaRepAEAO(int nAEId, int nPeriodo)
+        public List<Combo> ListarAExPlanOperativoId(Int32 PlanOperativoId)
+        {
+            DbCommand oDbCommand = oDatabase.GetStoredProcCommand(Procedimiento.uspListarAExPlanOperativoId);
+            oDatabase.AddInParameter(oDbCommand, "@nPlanOperativoId", DbType.Int32, PlanOperativoId);
+
+            List<Combo> ls = new List<Combo>();
+            using (IDataReader datos = oDatabase.ExecuteReader(oDbCommand))
+            {
+                while (datos.Read())
+                {
+                    Combo item = new Combo();
+                    item.CValue = DataUtil.DbValueToDefault<Int32>(datos[datos.GetOrdinal("ComboValue")]).ToString();
+                    item.CText = DataUtil.DbValueToDefault<String>(datos[datos.GetOrdinal("ComboText")]);
+                    ls.Add(item);
+                }
+            }
+            return ls;
+        }
+
+        public List<Combo> ListarPeriodoCalexPlanOperativoId(Int32 PlanOperativoId)
+        {
+            DbCommand oDbCommand = oDatabase.GetStoredProcCommand(Procedimiento.uspListarPeriodoCalendarioxPlanOperativo);
+            oDatabase.AddInParameter(oDbCommand, "@nPlanOperativoId", DbType.Int32, PlanOperativoId);
+
+            List<Combo> ls = new List<Combo>();
+            using (IDataReader datos = oDatabase.ExecuteReader(oDbCommand))
+            {
+                while (datos.Read())
+                {
+                    Combo item = new Combo();
+                    item.CValue = DataUtil.DbValueToDefault<Byte>(datos[datos.GetOrdinal("ComboValue")]).ToString();
+                    item.CText = DataUtil.DbValueToDefault<String>(datos[datos.GetOrdinal("ComboText")]);
+                    ls.Add(item);
+                }
+            }
+            return ls;
+        }
+
+        public List<ReporteAEAO> ListaRepAEAO(int nAEId, int nPeriodo,int nPlanOperativoId)
         {
             DbCommand oDbCommand = oDatabase.GetStoredProcCommand(Procedimiento.uspRepAEAO);
             oDatabase.AddInParameter(oDbCommand, "@nAEId", DbType.Int32, nAEId);
             oDatabase.AddInParameter(oDbCommand, "@nPeriodo", DbType.Int32, nPeriodo);
+            oDatabase.AddInParameter(oDbCommand, "@nPlanOperativoId", DbType.Int32, nPlanOperativoId);
 
             List<ReporteAEAO> ls = new List<ReporteAEAO>();
             using (IDataReader datos = oDatabase.ExecuteReader(oDbCommand))

@@ -194,20 +194,56 @@ namespace VisorPub.Controllers
         [ActionName("Reporte-AE-AO")]
         public ActionResult ReporteAEAO()
         {
+            //ReporteViewModel modelo = new ReporteViewModel();
+            //modelo.lsAcEst = oReporteAD.ListarAE();
+            
+            AvanceInformeAD handlerAvance = new AvanceInformeAD();
             ReporteViewModel modelo = new ReporteViewModel();
-            modelo.lsAcEst = oReporteAD.ListarAE();
+            modelo.lsPOIs = handlerAvance.ListaPOIVigentesCombo();
             return View(modelo);
+
         }
 
         [RequiresAuthenticationAttribute]
-        public JsonResult ListaRepActividadOpe(int nAEId, int nPeriodo)
+        public JsonResult ListarAExPlanOperativoId(Int32 PlanOperativoId)
         {
-            List<ReporteAEAO> lsReporte = oReporteAD.ListaRepAEAO(nAEId, nPeriodo);
+            ReporteViewModel modelo = new ReporteViewModel();
+
+            modelo.lsAcEst = oReporteAD.ListarAExPlanOperativoId(PlanOperativoId);
+            modelo.lsPeriodoCale = oReporteAD.ListarPeriodoCalexPlanOperativoId(PlanOperativoId);
+            return Json(JsonConvert.SerializeObject(modelo));
+        }
+
+        [RequiresAuthenticationAttribute]
+        public JsonResult ListaRepActividadOpe(int nAEId, int nPeriodo, int nPlanOperativoId)
+        {
+            List<ReporteAEAO> lsReporte = oReporteAD.ListaRepAEAO(nAEId, nPeriodo, nPlanOperativoId);
             return Json(JsonConvert.SerializeObject(lsReporte));
         }
 
 
         /*END REPORTE AEAO*/
+
+
+        /*Reporte Grafico*/
+
+
+        [RequiresAuthenticationAttribute]
+        [ActionName("ReporteGrafico")]
+        public ActionResult ReporteGrafico()
+        {
+            AvanceInformeAD handlerAvance = new AvanceInformeAD();
+            ReporteViewModel modelo = new ReporteViewModel();
+            modelo.lsPOIs = handlerAvance.ListaPOIVigentesCombo();
+            return View(modelo);
+        }
+
+        //[RequiresAuthenticationAttribute]
+        //public JsonResult ListaRepActividadOpe(int nAEId, int nPeriodo)
+        //{
+        //    List<ReporteAEAO> lsReporte = oReporteAD.ListaRepAEAO(nAEId, nPeriodo);
+        //    return Json(JsonConvert.SerializeObject(lsReporte));
+        //}
 
     }
 }

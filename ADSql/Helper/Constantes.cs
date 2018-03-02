@@ -32,6 +32,8 @@ namespace ADSql.Helper
         public const string uspListarColaboradores = "uspListarColaboradores";
         public const string uspRepDesempIndividual = "uspRepDesempIndividual";
         public const string uspListarAE = "uspListarAE";
+        public const string uspListarAExPlanOperativoId = "uspListarAExPlanOperativoId";
+        public const string uspListarPeriodoCalendarioxPlanOperativo = "uspListarPeriodoCalendarioxPlanOperativo";
         public const string uspRepAEAO = "uspRepAEAO";
         public const string uspObtenerValoresRepDesempIndividual = "uspObtenerValoresRepDesempIndividual";
 

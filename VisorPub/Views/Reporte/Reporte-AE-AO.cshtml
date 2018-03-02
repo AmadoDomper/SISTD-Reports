@@ -19,6 +19,12 @@
     <div class="col-lg-12">
         <form id="frm" data-smk-icon="glyphicon-asterisk">
             <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Plan Operativo</label>
+                        <select class="form-control" id="ddlplan" name="ddlplan" required></select>
+                    </div>
+                </div>
                 <div class="col-md-4">  
                     <div class="form-group">
                         <label>Actividad Estratégica</label>
@@ -28,11 +34,7 @@
                 <div class="col-md-2">
                     <div class="form-group">
                         <label>Periodo</label>
-                        <select class="form-control" id="ddlPeriodo" name="ddlPeriodo" required>
-                            <option value="1">I Semestre</option>
-                            <option value="2">III Trimestre</option>
-                            <option value="3">IV Trimestre</option>
-                        </select>
+                        <select class="form-control" id="ddlPeriodo" name="ddlPeriodo" required></select>
                     </div>
                 </div>
                 <div class="col-md-1">
@@ -50,6 +52,7 @@
     </div>
 </div>
 
+@Html.Hidden("listarActividadEstrategica", Url.Action("ListarAExPlanOperativoId", "Reporte"))
 @Html.Hidden("listaRepActOpe", Url.Action("ListaRepActividadOpe", "Reporte"))
 
 <!--Pagina controlador de vista-->
