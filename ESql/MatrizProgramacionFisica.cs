@@ -32,18 +32,24 @@ namespace ESql
         public int? nAvance1 { get; set; }
         public int? nAvance2 { get; set; }
         public int? nAvance3 { get; set; }
+        public int? nAvance4 { get; set; }
         public int? nMotivoRestraso1 { get; set; }
         public int? nMotivoRestraso2 { get; set; }
         public int? nMotivoRestraso3 { get; set; }
+        public int? nMotivoRestraso4 { get; set; }
 
         public string cMotivoRestraso1 { get; set; }
         public string cMotivoRestraso2 { get; set; }
         public string cMotivoRestraso3 { get; set; }
+        public string cMotivoRestraso4 { get; set; }
 
         public string cLogro1 { get; set; }
         public string cLogro2 { get; set; }
         public string cLogro3 { get; set; }
+        public string cLogro4 { get; set; }
         public decimal nTotal_I_S { get; set; }
+        public decimal nTotal_I_T { get; set; }
+        public decimal nTotal_II_T { get; set; }
         public decimal nTotal_III_T { get; set; }
         public decimal nTotal_IV_T { get; set; }
     }

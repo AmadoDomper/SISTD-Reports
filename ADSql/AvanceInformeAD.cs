@@ -93,9 +93,11 @@ namespace ADSql
                     item.Ene = DataUtil.DbValueToDefault<Decimal>(datos[datos.GetOrdinal("Ene")]);
                     item.Feb = DataUtil.DbValueToDefault<Decimal>(datos[datos.GetOrdinal("Feb")]);
                     item.Mar = DataUtil.DbValueToDefault<Decimal>(datos[datos.GetOrdinal("Mar")]);
+                    item.nTotal_I_T = DataUtil.DbValueToDefault<Decimal>(datos[datos.GetOrdinal("Total_I_T")]);
                     item.Abr = DataUtil.DbValueToDefault<Decimal>(datos[datos.GetOrdinal("Abr")]);
                     item.May = DataUtil.DbValueToDefault<Decimal>(datos[datos.GetOrdinal("May")]);
                     item.Jun = DataUtil.DbValueToDefault<Decimal>(datos[datos.GetOrdinal("Jun")]);
+                    item.nTotal_II_T = DataUtil.DbValueToDefault<Decimal>(datos[datos.GetOrdinal("Total_II_T")]);
                     item.nTotal_I_S = DataUtil.DbValueToDefault<Decimal>(datos[datos.GetOrdinal("Total_I_S")]);
                     item.Jul = DataUtil.DbValueToDefault<Decimal>(datos[datos.GetOrdinal("Jul")]);
                     item.Ago = DataUtil.DbValueToDefault<Decimal>(datos[datos.GetOrdinal("Ago")]);
@@ -121,6 +123,11 @@ namespace ADSql
                     item.nMotivoRestraso3 = DataUtil.toIntDefault(datos[datos.GetOrdinal("nMotivoRestraso3")]);
                     item.cMotivoRestraso3 = DataUtil.DbValueToDefault<String>(datos[datos.GetOrdinal("cMotivoRestraso3")]);
                     item.cLogro3 = DataUtil.DbValueToDefault<String>(datos[datos.GetOrdinal("cLogro3")]);
+
+                    item.nAvance4 = DataUtil.toIntDefault(datos[datos.GetOrdinal("nAvance4")]);
+                    item.nMotivoRestraso4 = DataUtil.toIntDefault(datos[datos.GetOrdinal("nMotivoRestraso4")]);
+                    item.cMotivoRestraso4 = DataUtil.DbValueToDefault<String>(datos[datos.GetOrdinal("cMotivoRestraso4")]);
+                    item.cLogro4 = DataUtil.DbValueToDefault<String>(datos[datos.GetOrdinal("cLogro4")]);
 
                     ls.Add(item);
                 }
@@ -167,13 +174,14 @@ namespace ADSql
             return ls;
         }
 
-        public Indicadores OptenerIndicadores(int nInstancia,int nUserId, int nPeriodo)
+        public Indicadores OptenerIndicadores(int nInstancia,int nUserId, int nPeriodo, int nPlanOpeId)
         {
             Indicadores oIndicadores = new Indicadores();
             DbCommand oDbCommand = oDatabase.GetStoredProcCommand(Procedimiento.uspOptenerIndicadores);
             oDatabase.AddInParameter(oDbCommand, "@InstanciaId", DbType.Int32, nInstancia);
             oDatabase.AddInParameter(oDbCommand, "@ResponsableId", DbType.Int32, nUserId);
             oDatabase.AddInParameter(oDbCommand, "@nPeriodo", DbType.Int32, nPeriodo);
+            oDatabase.AddInParameter(oDbCommand, "@nPlanOpeId", DbType.Int32, nPlanOpeId);  
 
             using (IDataReader datos = oDatabase.ExecuteReader(oDbCommand))
             {

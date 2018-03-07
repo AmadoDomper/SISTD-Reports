@@ -35,6 +35,7 @@ namespace VisorPub.Controllers
 
 
         AvanceInformeAD handlerAvance = new AvanceInformeAD();
+        ReportesAD oReporteAD = new ReportesAD();
         [RequiresAuthenticationAttribute]
         public ActionResult Index()
         {
@@ -73,7 +74,16 @@ namespace VisorPub.Controllers
             return Json(JsonConvert.SerializeObject(lsMetas));
         }
 
-        
+
+        [RequiresAuthenticationAttribute]
+        public JsonResult ListarCombosRegAvancexPlanOperativoId(Int32 PlanOperativoId, Int32 ResponsableMeta)
+        {
+            RegistrarAvanceViewModel modelo = new RegistrarAvanceViewModel();
+
+            modelo.lsMetas = handlerAvance.ListarMetasDeResponsableMeta(PlanOperativoId, ResponsableMeta);
+            modelo.lsPeriodoCale = oReporteAD.ListarPeriodoCalexPlanOperativoId(PlanOperativoId);
+            return Json(JsonConvert.SerializeObject(modelo));
+        }
 
         [RequiresAuthenticationAttribute]
         public JsonResult ListarMatrizPogramacion(Int32 InstanciaId, Int32 PlanOperativoId, Int32 nPeriodo, Int32 nRespId)
@@ -115,15 +125,21 @@ namespace VisorPub.Controllers
                     sheet.Cells["C1"].Value = "Ene";
                     sheet.Cells["D1"].Value = "Feb";
                     sheet.Cells["E1"].Value = "Mar";
-                    sheet.Cells["F1"].Value = "Abr";
-                    sheet.Cells["G1"].Value = "May";
-                    sheet.Cells["H1"].Value = "Jun";
-                    sheet.Cells["I1"].Value = "Avance Programado";
-                    sheet.Cells["J1"].Value = "Avance I Sem.";
-                    sheet.Cells["K1"].Value = "Motivo del Retraso";
-                    sheet.Cells["L1"].Value = "Logros más importantes";
 
-                    using (ExcelRange rng = sheet.Cells["A1:L1"])
+
+                    if (PlanOperativoId == 14)
+                    {
+                        sheet.Cells["F1"].Value = "Abr";
+                        sheet.Cells["G1"].Value = "May";
+                        sheet.Cells["H1"].Value = "Jun";
+                    }
+ 
+                    sheet.Cells[PlanOperativoId == 14 ? "I1" : "F1"].Value = "Avance Programado";
+                    sheet.Cells[PlanOperativoId == 14 ? "J1" : "G1"].Value = PlanOperativoId == 14 ? "Avance I Sem." : "Avance I Trim.";
+                    sheet.Cells[PlanOperativoId == 14 ? "K1" : "H1"].Value = "Motivo del Retraso";
+                    sheet.Cells[PlanOperativoId == 14 ? "L1" : "I1"].Value = "Logros más importantes";
+
+                    using (ExcelRange rng = sheet.Cells[PlanOperativoId == 14 ? "A1:L1" : "A1:I1"])
                     {
                         rng.Style.Font.Bold = true;
                         rng.Style.Fill.PatternType = ExcelFillStyle.Solid;                      //Set Pattern for the background to Solid
@@ -151,35 +167,43 @@ namespace VisorPub.Controllers
                         sheet.Cells[rowIndex, col++].Value = item.Ene;
                         sheet.Cells[rowIndex, col++].Value = item.Feb;
                         sheet.Cells[rowIndex, col++].Value = item.Mar;
-                        sheet.Cells[rowIndex, col++].Value = item.Abr;
-                        sheet.Cells[rowIndex, col++].Value = item.May;
-                        sheet.Cells[rowIndex, col++].Value = item.Jun;
-                        sheet.Cells[rowIndex, col++].Value = item.nTotal_I_S;
+
+                        if (PlanOperativoId == 14)
+                        {
+                            sheet.Cells[rowIndex, col++].Value = item.Abr;
+                            sheet.Cells[rowIndex, col++].Value = item.May;
+                            sheet.Cells[rowIndex, col++].Value = item.Jun;
+                            sheet.Cells[rowIndex, col++].Value = item.nTotal_I_S;
+                        }
+                        else
+                        {
+                            sheet.Cells[rowIndex, col++].Value = item.nTotal_I_T;
+                        }
+
                         sheet.Cells[rowIndex, col++].Value = item.nAvance1;
                         sheet.Cells[rowIndex, col++].Value = item.cMotivoRestraso1;
                         sheet.Cells[rowIndex, col++].Value = item.cLogro1;
                         rowIndex++;
                     }
 
-                    using (ExcelRange rng = sheet.Cells["A1:L" + (rowIndex - 1).ToString()])
+                    using (ExcelRange rng = sheet.Cells[(PlanOperativoId == 14 ? "A1:L" : "A1:I") + (rowIndex - 1).ToString()])
                     {
                        rng.Style.Border.Top.Style = rng.Style.Border.Left.Style = rng.Style.Border.Bottom.Style = rng.Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
                     }
 
-                    using (ExcelRange rng = sheet.Cells["I1:I" + (rowIndex - 1).ToString()])
+                    using (ExcelRange rng = sheet.Cells[(PlanOperativoId == 14 ? "I1:I" : "F1:F")    + (rowIndex - 1).ToString()])
                     {
                         rng.Style.Font.Bold = true;
                     }
 
-                    using (ExcelRange col = sheet.Cells[2, 10, 1 + oMatriz.Count, 10])
+                    using (ExcelRange col = sheet.Cells[2, PlanOperativoId == 14 ? 10 : 7, 1 + oMatriz.Count, PlanOperativoId == 14 ? 10 : 7])
                     {
                         col.Style.Fill.PatternType = ExcelFillStyle.Solid;
                         col.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(140, 173, 232));
                     }
 
-                    using (ExcelRange col = sheet.Cells[2, 2, 1 + oMatriz.Count, 10])
+                    using (ExcelRange col = sheet.Cells[2, 2, 1 + oMatriz.Count, PlanOperativoId == 14 ? 10 : 7])
                     {
-                        //col.Style.Numberformat.Format = "#,##0.00";
                         col.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                         col.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                     }
@@ -187,24 +211,45 @@ namespace VisorPub.Controllers
                     sheet.Column(3).Width = 4;
                     sheet.Column(4).Width = 4;
                     sheet.Column(5).Width = 5;
-                    sheet.Column(6).Width = 4;
-                    sheet.Column(7).Width = 5;
-                    sheet.Column(8).Width = 4;
-                    sheet.Column(9).Width = 14;
-                    sheet.Column(10).Width = 12.57;
-                    sheet.Column(11).Width = 30;
-                    sheet.Column(12).Width = 30;
 
 
+                    if (PlanOperativoId == 14)
+                    {
+                        sheet.Column(6).Width = 4;
+                        sheet.Column(7).Width = 5;
+                        sheet.Column(8).Width = 4;
+                        sheet.Column(9).Width = 14;
+                        sheet.Column(10).Width = 12.57;
+                        sheet.Column(11).Width = 30;
+                        sheet.Column(12).Width = 30;
+                    }
+                    else
+                    {
+                        sheet.Column(6).Width = 14;
+                        sheet.Column(7).Width = 12.57;
+                        sheet.Column(8).Width = 30;
+                        sheet.Column(9).Width = 30;
+                    }
 
                 }
                 else if (nPeriodo == 2)
                 {
-                    sheet.Cells["C1"].Value = "Jul";
-                    sheet.Cells["D1"].Value = "Ago";
-                    sheet.Cells["E1"].Value = "Sep";
+
+                    if (PlanOperativoId == 14)
+                    {
+                        sheet.Cells["C1"].Value = "Jul";
+                        sheet.Cells["D1"].Value = "Ago";
+                        sheet.Cells["E1"].Value = "Sep";
+                    }
+                    else
+                    {
+                        sheet.Cells["C1"].Value = "Abr";
+                        sheet.Cells["D1"].Value = "May";
+                        sheet.Cells["E1"].Value = "Jun";
+                    }
+
                     sheet.Cells["F1"].Value = "Avance Programado";
-                    sheet.Cells["G1"].Value = "Avance III Trim.";
+                    sheet.Cells["G1"].Value = PlanOperativoId == 14 ? "Avance III Trim." : "Avance II Trim.";
                     sheet.Cells["H1"].Value = "Motivo del Retraso";
                     sheet.Cells["I1"].Value = "Logros más importantes";
 
@@ -217,9 +262,6 @@ namespace VisorPub.Controllers
                         rng.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                         rng.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                     }
-
-
-                    //sheet.Name = "Rep_NotaEntrega";
 
                     var rowIndex = 2;
                     foreach (var item in oMatriz)
@@ -234,10 +276,22 @@ namespace VisorPub.Controllers
 
                         sheet.Cells[rowIndex, col++].Value = item.Nombre;
                         sheet.Cells[rowIndex, col++].Value = item.UnidadDeMedida;
-                        sheet.Cells[rowIndex, col++].Value = item.Jul;
-                        sheet.Cells[rowIndex, col++].Value = item.Ago;
-                        sheet.Cells[rowIndex, col++].Value = item.Sep;
-                        sheet.Cells[rowIndex, col++].Value = item.nTotal_III_T;
+
+                        if (PlanOperativoId == 14)
+                        {
+                            sheet.Cells[rowIndex, col++].Value = item.Jul;
+                            sheet.Cells[rowIndex, col++].Value = item.Ago;
+                            sheet.Cells[rowIndex, col++].Value = item.Sep;
+                            sheet.Cells[rowIndex, col++].Value = item.nTotal_III_T;
+                        }
+                        else
+                        {
+                            sheet.Cells[rowIndex, col++].Value = item.Abr;
+                            sheet.Cells[rowIndex, col++].Value = item.May;
+                            sheet.Cells[rowIndex, col++].Value = item.Jun;
+                            sheet.Cells[rowIndex, col++].Value = item.nTotal_II_T;
+                        }
+
                         sheet.Cells[rowIndex, col++].Value = item.nAvance2;
                         sheet.Cells[rowIndex, col++].Value = item.cMotivoRestraso2;
                         sheet.Cells[rowIndex, col++].Value = item.cLogro2;
@@ -278,11 +332,22 @@ namespace VisorPub.Controllers
                 }
                 else if (nPeriodo == 3)
                 {
-                    sheet.Cells["C1"].Value = "Oct";
-                    sheet.Cells["D1"].Value = "Nov";
-                    sheet.Cells["E1"].Value = "Dic";
+
+                    if (PlanOperativoId == 14)
+                    {
+                        sheet.Cells["C1"].Value = "Oct";
+                        sheet.Cells["D1"].Value = "Nov";
+                        sheet.Cells["E1"].Value = "Dic";
+                    }
+                    else
+                    {
+                        sheet.Cells["C1"].Value = "Jul";
+                        sheet.Cells["D1"].Value = "Ago";
+                        sheet.Cells["E1"].Value = "Sep";
+                    }
+
                     sheet.Cells["F1"].Value = "Avance Programado";
-                    sheet.Cells["G1"].Value = "Avance IV Trim.";
+                    sheet.Cells["G1"].Value = PlanOperativoId == 14 ? "Avance IV Trim." : "Avance III Trim.";
                     sheet.Cells["H1"].Value = "Motivo del Retraso";
                     sheet.Cells["I1"].Value = "Logros más importantes";
 
@@ -311,10 +376,22 @@ namespace VisorPub.Controllers
 
                         sheet.Cells[rowIndex, col++].Value = item.Nombre;
                         sheet.Cells[rowIndex, col++].Value = item.UnidadDeMedida;
-                        sheet.Cells[rowIndex, col++].Value = item.Oct;
-                        sheet.Cells[rowIndex, col++].Value = item.Nov;
-                        sheet.Cells[rowIndex, col++].Value = item.Dic;
-                        sheet.Cells[rowIndex, col++].Value = item.nTotal_IV_T;
+
+                        if (PlanOperativoId == 14)
+                        {
+                            sheet.Cells[rowIndex, col++].Value = item.Oct;
+                            sheet.Cells[rowIndex, col++].Value = item.Nov;
+                            sheet.Cells[rowIndex, col++].Value = item.Dic;
+                            sheet.Cells[rowIndex, col++].Value = item.nTotal_IV_T;
+                        }
+                        else
+                        {
+                            sheet.Cells[rowIndex, col++].Value = item.Jul;
+                            sheet.Cells[rowIndex, col++].Value = item.Ago;
+                            sheet.Cells[rowIndex, col++].Value = item.Sep;
+                            sheet.Cells[rowIndex, col++].Value = item.nTotal_III_T;
+                        }
+
                         sheet.Cells[rowIndex, col++].Value = item.nAvance3;
                         sheet.Cells[rowIndex, col++].Value = item.cMotivoRestraso3;
                         sheet.Cells[rowIndex, col++].Value = item.cLogro3;
@@ -352,7 +429,83 @@ namespace VisorPub.Controllers
                     sheet.Column(9).Width = 30;
 
                 }
-                
+                else if (nPeriodo == 4)
+                {
+                    sheet.Cells["C1"].Value = "Oct";
+                    sheet.Cells["D1"].Value = "Nov";
+                    sheet.Cells["E1"].Value = "Dic";
+                    sheet.Cells["F1"].Value = "Avance Programado";
+                    sheet.Cells["G1"].Value = "Avance IV Trim.";
+                    sheet.Cells["H1"].Value = "Motivo del Retraso";
+                    sheet.Cells["I1"].Value = "Logros más importantes";
+
+                    using (ExcelRange rng = sheet.Cells["A1:I1"])
+                    {
+                        rng.Style.Font.Bold = true;
+                        rng.Style.Fill.PatternType = ExcelFillStyle.Solid;                      //Set Pattern for the background to Solid
+                        rng.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(242, 242, 242));  //Set color to dark blue
+                        rng.Style.Font.Color.SetColor(Color.Black);
+                        rng.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        rng.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    }
+
+                    //sheet.Name = "Rep_NotaEntrega";
+
+                    var rowIndex = 2;
+                    foreach (var item in oMatriz)
+                    {
+                        var col = 1;
+
+                        if (item.Nivel == 1)
+                        {
+                            var cell = sheet.Cells[rowIndex, 1];
+                            cell.Style.Font.Bold = true;
+                        }
+
+                        sheet.Cells[rowIndex, col++].Value = item.Nombre;
+                        sheet.Cells[rowIndex, col++].Value = item.UnidadDeMedida;
+                        sheet.Cells[rowIndex, col++].Value = item.Oct;
+                        sheet.Cells[rowIndex, col++].Value = item.Nov;
+                        sheet.Cells[rowIndex, col++].Value = item.Dic;
+                        sheet.Cells[rowIndex, col++].Value = item.nTotal_IV_T;
+                        sheet.Cells[rowIndex, col++].Value = item.nAvance4;
+                        sheet.Cells[rowIndex, col++].Value = item.cMotivoRestraso4;
+                        sheet.Cells[rowIndex, col++].Value = item.cLogro4;
+                        rowIndex++;
+                    }
+
+                    using (ExcelRange rng = sheet.Cells["A1:I" + (rowIndex - 1).ToString()])
+                    {
+                        rng.Style.Border.Top.Style = rng.Style.Border.Left.Style = rng.Style.Border.Bottom.Style = rng.Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+                    }
+
+                    using (ExcelRange rng = sheet.Cells["F1:F" + (rowIndex - 1).ToString()])
+                    {
+                        rng.Style.Font.Bold = true;
+                    }
+
+                    using (ExcelRange col = sheet.Cells[2, 7, 1 + oMatriz.Count, 7])
+                    {
+                        col.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        col.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(140, 173, 232));
+                    }
+
+                    using (ExcelRange col = sheet.Cells[2, 2, 1 + oMatriz.Count, 7])
+                    {
+                        col.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        col.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    }
+
+                    sheet.Column(3).Width = 4;
+                    sheet.Column(4).Width = 5;
+                    sheet.Column(5).Width = 4;
+                    sheet.Column(6).Width = 14;
+                    sheet.Column(7).Width = 12.57;
+                    sheet.Column(8).Width = 30;
+                    sheet.Column(9).Width = 30;
+
+                }
+
                 sheet.Column(1).Width = 34;
                 sheet.Column(2).Width = 18;
 
@@ -379,13 +532,13 @@ namespace VisorPub.Controllers
 
 
         [RequiresAuthenticationAttribute]
-        public JsonResult OptenerIndicadores(Int32 InstanciaId, Int32 nPeriodo)
+        public JsonResult OptenerIndicadores(Int32 InstanciaId, Int32 nPeriodo, int nPlanOpeId)
         {
             Indicadores oEficaFi = new Indicadores();
             Usuario oUsuario = new Usuario();
             oUsuario = (Usuario)Session["Datos"];
 
-            oEficaFi = handlerAvance.OptenerIndicadores(InstanciaId,oUsuario.UserId, nPeriodo);
+            oEficaFi = handlerAvance.OptenerIndicadores(InstanciaId,oUsuario.UserId, nPeriodo, nPlanOpeId);
             return Json(JsonConvert.SerializeObject(oEficaFi));
         }
 

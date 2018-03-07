@@ -10,6 +10,8 @@ namespace VisorPub.Models
     {
         public List<Combo> lsPOIsVigentes;
         public List<Combo> lsMotivoRetraso;
+        public List<Combo> lsMetas;
+        public List<Combo> lsPeriodoCale;
         public int idUser;
     }
 }

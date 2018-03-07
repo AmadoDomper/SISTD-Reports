@@ -35,9 +35,6 @@
                     <div class="form-group">
                         <label>Periodo</label>
                         <select class="form-control" id="ddlPeriodo" name="ddlPeriodo" required>
-                            <option value="1">I Semestre</option>
-                            <option value="2" selected="selected">III Trimestre</option>
-                            <option value="3">IV Trimestre</option>
                         </select>
                     </div>
                 </div>
@@ -65,10 +62,11 @@
     </div>
 </div>
 
-@Html.Hidden("listarMetasDeResponsableMeta", Url.Action("ListarMetasDeResponsableMeta", "Inicio"))
+@Html.Hidden("listarCombosxPlanOperativoId", Url.Action("ListarCombosRegAvancexPlanOperativoId", "Inicio"))
 @Html.Hidden("listarMatrizPogramacion", Url.Action("ListarMatrizPogramacion", "Inicio"))
 @Html.Hidden("optenerIndicadores", Url.Action("OptenerIndicadores", "Inicio"))
 @Html.Hidden("registrarAvancePOI", Url.Action("RegistrarAvancePOI", "Inicio"))
+@Html.Hidden("GetExcelMatrizProgramacion", Url.Action("GetExcelMatrizProgramacion", "Inicio"))
 
 <!--Pagina controlador de vista-->
 <script src="~/Public/js/content/publicacion/RegistrarAvance.js"></script>
