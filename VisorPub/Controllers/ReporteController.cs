@@ -108,9 +108,9 @@ namespace VisorPub.Controllers
         }
 
         [RequiresAuthenticationAttribute]
-        public JsonResult ListarReporteAvanceFisicoMeta(int nPeriodo)
+        public JsonResult ListarReporteAvanceFisicoMeta(int nPeriodo, int nPlanOpeId)
         {
-            List<RepAvaFisiMeta> lsReporte = oReporteAD.ListaRepAvanceFisicoMeta(nPeriodo);
+            List<RepAvaFisiMeta> lsReporte = oReporteAD.ListaRepAvanceFisicoMeta(nPeriodo, nPlanOpeId);
             return Json(JsonConvert.SerializeObject(lsReporte));
         }
 

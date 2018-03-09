@@ -86,10 +86,11 @@ namespace ADSql
             return ls;
         }
 
-        public List<RepAvaFisiMeta> ListaRepAvanceFisicoMeta(int nPeriodo)
+        public List<RepAvaFisiMeta> ListaRepAvanceFisicoMeta(int nPeriodo, int nPlanOpeId)
         {
             DbCommand oDbCommand = oDatabase.GetStoredProcCommand(Procedimiento.uspRepAvanceFisicoxMeta);
             oDatabase.AddInParameter(oDbCommand, "@nPeriodo", DbType.Int32, nPeriodo);
+            oDatabase.AddInParameter(oDbCommand, "@nPlanOpeId", DbType.Int32, nPlanOpeId);
 
             List<RepAvaFisiMeta> ls = new List<RepAvaFisiMeta>();
             using (IDataReader datos = oDatabase.ExecuteReader(oDbCommand))
