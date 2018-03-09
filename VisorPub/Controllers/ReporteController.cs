@@ -39,13 +39,24 @@ namespace VisorPub.Controllers
         [ActionName("Reporte-Eficacia-ActProgra-CatePresu")]
         public ActionResult ReporteEficacia()
         {
-            return View();
+            AvanceInformeAD handlerAvance = new AvanceInformeAD();
+            ReporteViewModel modelo = new ReporteViewModel();
+            modelo.lsPOIs = handlerAvance.ListaPOIVigentesCombo();
+            return View(modelo);
         }
 
         [RequiresAuthenticationAttribute]
-        public JsonResult ReporteEficaciaCatePre(int nPeriodo)
+        public JsonResult ListarPeriodoCalendario(Int32 PlanOperativoId)
         {
-            List<ReporteEfiCatePre> lsReporte = oReporteAD.ListaReporteEfiCatePre(nPeriodo);
+            ReporteViewModel modelo = new ReporteViewModel();
+            modelo.lsPeriodoCale = oReporteAD.ListarPeriodoCalexPlanOperativoId(PlanOperativoId);
+            return Json(JsonConvert.SerializeObject(modelo));
+        }
+
+        [RequiresAuthenticationAttribute]
+        public JsonResult ReporteEficaciaCatePre(int nPeriodo, int nPlanOpeId)
+        {
+            List<ReporteEfiCatePre> lsReporte = oReporteAD.ListaReporteEfiCatePre(nPeriodo, nPlanOpeId);
             return Json(JsonConvert.SerializeObject(lsReporte));
         }
 

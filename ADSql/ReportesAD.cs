@@ -15,10 +15,11 @@ namespace ADSql
     {
         private Database oDatabase = DatabaseFactory.CreateDatabase(Conexion.nombre);
 
-        public List<ReporteEfiCatePre> ListaReporteEfiCatePre(int nPeriodo)
+        public List<ReporteEfiCatePre> ListaReporteEfiCatePre(int nPeriodo, int nPlanOpeId)
         {
             DbCommand oDbCommand = oDatabase.GetStoredProcCommand(Procedimiento.uspRepEficaxCatPresu);
             oDatabase.AddInParameter(oDbCommand, "@nPeriodo", DbType.Int32, nPeriodo);
+            oDatabase.AddInParameter(oDbCommand, "@nPlanOpeId", DbType.Int32, nPlanOpeId);
 
             List<ReporteEfiCatePre> ls = new List<ReporteEfiCatePre>();
             using (IDataReader datos = oDatabase.ExecuteReader(oDbCommand))

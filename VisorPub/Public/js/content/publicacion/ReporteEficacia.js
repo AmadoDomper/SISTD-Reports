@@ -1,14 +1,54 @@
 ﻿
 
 $(document).ready(function () {
+    $('#frm #ddlplan').dropdowlist2({
+        dataShow: 'CText',
+        dataValue: 'CValue',
+        dataselect: 'CValue',
+        datalist: Model.lsPOIs
+    });
+
+
+    $('#frm #ddlplan').change(function () {
+
+        var url = $("#listaPeriodo").val();
+        var nPlanOpeId = $('#frm #ddlplan').val();
+
+        if (nPlanOpeId != "") {
+            $.fn.Conexion({
+                direccion: url,
+                bloqueo: false,
+                datos: { "PlanOperativoId": nPlanOpeId },
+                terminado: function (data) {
+                    data = JSON.parse(data);
+
+                    $('#ddlPeriodo').dropdowlist2({
+                        dataShow: 'CText',
+                        dataValue: 'CValue',
+                        dataselect: 'CValue',
+                        datalist: data.lsPeriodoCale
+                    });
+                }
+            });
+        }
+
+        setTimeout(function () {
+            CargarGrilla();
+        }, 500)
+
+
+    });
+
+    $('#frm #ddlplan').change();
 
     function CargarGrilla() {
         var nPeriodo = $("#ddlPeriodo").val();
+        var nPlanOpeId = $("#ddlplan").val();
         var myUrl = $("#myUrl").val();
 
         $.fn.Conexion({
             direccion: myUrl,
-            datos: { "nPeriodo": nPeriodo },
+            datos: { "nPeriodo": nPeriodo, "nPlanOpeId": nPlanOpeId },
             bloqueo: true,
             terminado: function (data) {
                 data = JSON.parse(data);
@@ -69,8 +109,6 @@ $(document).ready(function () {
             fields: fields
         });
     }
-
-    CargarGrilla();
 
     $('#frm #ddlPeriodo').change(function () {
         CargarGrilla();
