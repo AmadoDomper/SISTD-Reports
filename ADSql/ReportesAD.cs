@@ -39,10 +39,11 @@ namespace ADSql
             return ls;
         }
 
-        public List<RepEficaMeta> ListaRepEficaMeta(int nPeriodo)
+        public List<RepEficaMeta> ListaRepEficaMeta(int nPeriodo, int nPlanOpeId)
         {
             DbCommand oDbCommand = oDatabase.GetStoredProcCommand(Procedimiento.uspRepEficaxMeta);
             oDatabase.AddInParameter(oDbCommand, "@nPeriodo", DbType.Int32, nPeriodo);
+            oDatabase.AddInParameter(oDbCommand, "@nPlanOpeId", DbType.Int32, nPlanOpeId);
 
             List<RepEficaMeta> ls = new List<RepEficaMeta>();
             using (IDataReader datos = oDatabase.ExecuteReader(oDbCommand))

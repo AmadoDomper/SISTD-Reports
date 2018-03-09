@@ -65,13 +65,16 @@ namespace VisorPub.Controllers
         [ActionName("Reporte-Eficacia-Meta")]
         public ActionResult ReporteEficaciaMeta()
         {
-            return View();
+            AvanceInformeAD handlerAvance = new AvanceInformeAD();
+            ReporteViewModel modelo = new ReporteViewModel();
+            modelo.lsPOIs = handlerAvance.ListaPOIVigentesCombo();
+            return View(modelo);
         }
 
         [RequiresAuthenticationAttribute]
-        public JsonResult ReporteEficaciaMetaLista(int nPeriodo)
+        public JsonResult ReporteEficaciaMetaLista(int nPeriodo, int nPlanOpeId)
         {
-            List<RepEficaMeta> lsReporte = oReporteAD.ListaRepEficaMeta(nPeriodo);
+            List<RepEficaMeta> lsReporte = oReporteAD.ListaRepEficaMeta(nPeriodo, nPlanOpeId);
             return Json(JsonConvert.SerializeObject(lsReporte));
         }
 
