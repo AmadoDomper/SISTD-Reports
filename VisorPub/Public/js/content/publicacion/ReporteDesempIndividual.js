@@ -1,58 +1,90 @@
 ﻿$(document).ready(function () {
+    $('#frm #ddlplan').dropdowlist2({
+        dataShow: 'CText',
+        dataValue: 'CValue',
+        dataselect: 'CValue',
+        datalist: Model.lsPOIs
+    });
+
+
 
     nJefeId = 0;
     nUsuario = 0;
     nPeriodo = 0;
+    nPlanOpeId = 0;
 
     if (window.location.hash !== '') {
         var hash = window.location.hash.replace('#eva=', '');
         var parts = hash.split('/');
-        if (parts.length === 3) {
+        if (parts.length === 4) {
             nJefeId = parseInt(atob(atob(parts[0])), 10);
             nUsuario = parseInt(atob(atob(parts[1])), 10);
             nPeriodo = parseInt(atob(atob(parts[2])), 10);
+            nPlanOpeId = parseInt(atob(atob(parts[3])), 10);
         }
     }
 
-    //var shouldUpdate = true;
-    //var ActualizarLink = function () {
-    //    if (!shouldUpdate) {
-    //        // do not update the URL when the view was changed in the 'popstate' handler
-    //        shouldUpdate = true;
-    //        return;
-    //    }
+    if (nPlanOpeId != 0) {
+            $("#ddlplan").val(nPlanOpeId);
+    }
 
-    //    var _nJefeId = $('#frm #ddlJefe').val();
-    //    var _nUsuarioId = $("#ddlEquipo").val();
-    //    var _nPeriodo = $("#ddlPeriodo").val();
-
-    //    var hash = '#eva=' +
-    //                _nJefeId + '/' +
-    //                _nUsuarioId + '/' +
-    //                _nPeriodo;
-    //    var state = {
-    //        nJefeId: nJefeId,
-    //        nUsuarioId: nUsuario,
-    //        nPeriodo: nPeriodo
-    //    };
-    //    window.history.pushState(state, 'eva', hash);
+    nPlanOpeId = $("#ddlplan").val();
 
 
+    function ListarPeriodo() {
 
-    //};
+        var _nPlanOpeId = nPlanOpeId;
+
+        var url = $("#listarCombosxPlanOperativoId").val();
+        //var nPlanOpeId = $('#frm #ddlplan').val();
+
+        if (nPlanOpeId != "") {
+            $.fn.Conexion({
+                direccion: url,
+                bloqueo: false,
+                datos: { "PlanOperativoId": _nPlanOpeId },
+                terminado: function (data) {
+                    data = JSON.parse(data);
+
+                    $('#frm #ddlPeriodo').dropdowlist2({
+                        dataShow: 'CText',
+                        dataValue: 'CValue',
+                        dataselect: 'CValue',
+                        datalist: data.lsPeriodoCale
+                    });
+
+                    var result = null;
+                    result = $.grep(data, function (e) { return e.CValue == nPeriodo })
+
+                    if (nPeriodo != 0) {
+                        if (result.length != 0) {
+                            $("#ddlPeriodo").val(nPeriodo);
+                        }
+                    }
+
+                    nPeriodo = $("#ddlPeriodo").val();
+                }
+            });
+        }
+
+        setTimeout(function () {
+            CargarGrilla();
+        }, 1000)
+    }
+
+
+
+    //$('#frm #ddlplan').change(function () {
+    //});
+
 
 
 
     function ListarJefe(_nJefeId) {
-        //$('#frm #ddlJefe').change(function () {
-        //var nJefeId = $('#frm #ddlJefe').val();
 
         var url = $("#listaJefe").val();
 
-        //if (nJefeId != 0) {
         $.fn.Conexion({
-            //direccion: '/Reporte/ListarJefe',
-            //direccion: '/repsistd/Reporte/ListarJefe',
             direccion: url,
             bloqueo: false,
             datos: { "nJefeId": _nJefeId },
@@ -96,8 +128,6 @@
         var url = $("#listaColabora").val();
 
         $.fn.Conexion({
-            //direccion: '/Reporte/ListarColaboradores',
-            //direccion: '/repsistd/Reporte/ListarColaboradores',
             direccion: url,
             bloqueo: false,
             datos: { "nJefeId": _nJefeId, "nUsuarioId": _nUsuId },
@@ -105,20 +135,15 @@
                 $('#btbuscar').prop('disabled', '');
                 data = JSON.parse(data);
                 if (data.length > 0) {
-                    $('#frm #ddlEquipo').dropdowlist2({
-                        dataShow: 'CText',
-                        dataValue: 'CValue',
-                        dataselect: 'CValue',
-                        datalist: data
-                    });
 
-                    $('#frm #ddlEquipo').dropdowlist2({
-                        dataShow: 'CText',
-                        dataValue: 'CValue',
-                        dataselect: 'CValue',
-                        datalist: data
-                    });
+                        $('#frm #ddlEquipo').dropdowlist2({
+                            dataShow: 'CText',
+                            dataValue: 'CValue',
+                            dataselect: 'CValue',
+                            datalist: data
+                        });
 
+                 setTimeout(function () {
                     var result = null;
                     result = $.grep(data, function (e) { return e.CValue == nUsuario })
 
@@ -130,7 +155,11 @@
 
                     nUsuario = $("#ddlEquipo").val();
 
-                    CargarGrilla();
+                  }, 500)
+
+                    if ($("#ddlplan").val() != "" || $("#ddlPeriodo").val() != null) {
+                        CargarGrilla();
+                    }    
                 }
                 else {
                     $('#btbuscar').prop('disabled', 'false');
@@ -141,18 +170,17 @@
     }
 
     function CargarGrilla() {
-        var nUsuarioId, nPeriodo;
+        var nUsuarioId, nPeriodo, _nPlanOpeId;
         _nUsuarioId = $("#ddlEquipo").val();
         _nPeriodo = $("#ddlPeriodo").val();
+        _nPlanOpeId = $("#ddlplan").val();
 
         var url = $("#listaDeseInd").val();
 
         $.fn.Conexion({
-            //direccion: '/repsistd/Reporte/ReporteDesempIndividual',
-            //direccion: '/Reporte/ReporteDesempIndividual',
             direccion : url,
             bloqueo: true,
-            datos: { "nUsuarioId": _nUsuarioId, "nPeriodo": _nPeriodo },
+            datos: { "nUsuarioId": _nUsuarioId, "nPeriodo": _nPeriodo, "nPlanOpeId": _nPlanOpeId},
             terminado: function (data) {
                 data = JSON.parse(data);
                 console.log(data);
@@ -161,17 +189,16 @@
                 ActualizarLink();
             }
         });
-
-
     }
 
 
     function CargarDatosDesem() {
-        var _nJefeId, _nColaboradorId, _nPeriodoId;
+        var _nJefeId, _nColaboradorId, _nPeriodoId, _nPlanOpeId;
         
         _nJefeId = $("#ddlJefe").val();
         _nColaboradorId = $("#ddlEquipo").val();
         _nPeriodoId = $("#ddlPeriodo").val();
+        _nPlanOpeId = $("#ddlplan").val();
 
         var url = $("#datosInd").val();
 
@@ -180,7 +207,7 @@
             //direccion: '/Reporte/OptenerDesemIndividualValores',
             direccion: url,
             bloqueo: false,
-            datos: { "nJefeId": _nJefeId, "nColaboradorId": _nColaboradorId, "nPeriodoId": _nPeriodo },
+            datos: { "nJefeId": _nJefeId, "nColaboradorId": _nColaboradorId, "nPeriodoId": _nPeriodo, "nPlanOpeId": _nPlanOpeId },
             terminado: function (data) {
                 data = JSON.parse(data);
                 $("#txtEficInd").val(data.Efic_Ind + "%");
@@ -279,15 +306,23 @@
     });
 
 
-    $('#frm #ddlEquipo,#frm #ddlPeriodo').change(function () {
-        CargarGrilla();
+    $('#frm #ddlplan').change(function () {
+        nPlanOpeId = $(this).val();
+        ListarPeriodo();
+    });
+    
 
+
+    $('#frm #ddlEquipo,#frm #ddlPeriodo').change(function () {
+        if ($("#ddlplan").val() != "" || $("#ddlPeriodo").val() != null) {
+            CargarGrilla();
+        }
     });
 
 
 
     ListarJefe(nJefeId);
-
+    ListarPeriodo();
 
 
     var shouldUpdate = true;
@@ -301,15 +336,18 @@
         var _nJefeId = $('#frm #ddlJefe').val();
         var _nUsuarioId = $("#ddlEquipo").val();
         var _nPeriodo = $("#ddlPeriodo").val();
+        var _nPlanOpeId = $("#ddlplan").val();
 
         var hash = '#eva=' +
                     btoa(btoa(_nJefeId)) + '/' +
                     btoa(btoa(_nUsuarioId)) + '/' +
-                    btoa(btoa(_nPeriodo));
+                    btoa(btoa(_nPeriodo)) + '/' +
+                    btoa(btoa(_nPlanOpeId));
         var state = {
             nJefeId: btoa(btoa(nJefeId)),
             nUsuarioId: btoa(btoa(nUsuario)),
-            nPeriodo: btoa(btoa(nPeriodo))
+            nPeriodo: btoa(btoa(nPeriodo)),
+            nPlanOpeId: btoa(btoa(nPlanOpeId))
         };
         window.history.pushState(state, 'eva', hash);
     };
@@ -320,6 +358,7 @@
         }
         $("#ddlJefe").val(atob(atob(event.state.nJefeId)));
         $("#ddlEquipo").val(atob(atob(event.state.nUsuarioId)));
+        $("#ddlplan").val(atob(atob(event.state.nPlanOpeId)));
         $("#ddlPeriodo").val(atob(atob(event.state.nPeriodo)));
         CargarGrilla();
 

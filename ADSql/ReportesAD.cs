@@ -204,11 +204,12 @@ namespace ADSql
         }
 
 
-        public List<RepDesempIndividual> ListaRepDesempIndividual(int nUsuarioId, int nPeriodo)
+        public List<RepDesempIndividual> ListaRepDesempIndividual(int nUsuarioId, int nPeriodo, int nPlanOpeId)
         {
             DbCommand oDbCommand = oDatabase.GetStoredProcCommand(Procedimiento.uspRepDesempIndividual);
             oDatabase.AddInParameter(oDbCommand, "@nUsuarioId", DbType.Int32, nUsuarioId);
             oDatabase.AddInParameter(oDbCommand, "@nPeriodo", DbType.Int32, nPeriodo);
+            oDatabase.AddInParameter(oDbCommand, "@nPlanOpeId", DbType.Int32, nPlanOpeId);
 
             List<RepDesempIndividual> ls = new List<RepDesempIndividual>();
             using (IDataReader datos = oDatabase.ExecuteReader(oDbCommand))
@@ -228,13 +229,14 @@ namespace ADSql
             return ls;
         }
 
-        public RepDesempIndiviValores OptenerDesemIndividualValores(int nJefeId ,int nColaboradorId, int nPeriodoId)
+        public RepDesempIndiviValores OptenerDesemIndividualValores(int nJefeId ,int nColaboradorId, int nPeriodoId, int nPlanOpeId)
         {
 
             DbCommand oDbCommand = oDatabase.GetStoredProcCommand(Procedimiento.uspObtenerValoresRepDesempIndividual);
             oDatabase.AddInParameter(oDbCommand, "@nJefeId", DbType.Int32, nJefeId);
             oDatabase.AddInParameter(oDbCommand, "@nColaboradorId", DbType.Int32, nColaboradorId);
             oDatabase.AddInParameter(oDbCommand, "@nPeriodo", DbType.Int32, nPeriodoId);
+            oDatabase.AddInParameter(oDbCommand, "@nPlanOpeId", DbType.Int32, nPlanOpeId);
 
             RepDesempIndiviValores oRepDesemInd = new RepDesempIndiviValores();
 

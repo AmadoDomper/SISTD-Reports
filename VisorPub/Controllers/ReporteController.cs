@@ -132,11 +132,18 @@ namespace VisorPub.Controllers
         [ActionName("Reporte-Desempeño-Individual")]
         public ActionResult ReporteDesempenoIndividual()
         {
+            AvanceInformeAD handlerAvance = new AvanceInformeAD();
             ReporteViewModel modelo = new ReporteViewModel();
-            //Usuario oUsuario = new Usuario();
-            //oUsuario = (Usuario)Session["Datos"];
-            //modelo.lsJefes = oReporteAD.ListarJefe(oUsuario.UserName);
+            modelo.lsPOIs = handlerAvance.ListaPOIVigentesCombo();
             return View(modelo);
+
+        }
+
+        public JsonResult ListarCombosDesemIndixPlanOperativoId(Int32 PlanOperativoId)
+        {
+            ReporteViewModel modelo = new ReporteViewModel();
+            modelo.lsPeriodoCale = oReporteAD.ListarPeriodoCalexPlanOperativoId(PlanOperativoId);
+            return Json(JsonConvert.SerializeObject(modelo));
         }
 
 
@@ -175,15 +182,15 @@ namespace VisorPub.Controllers
         }
 
         //[RequiresAuthenticationAttribute]
-        public JsonResult ReporteDesempIndividual(int nUsuarioId, int nPeriodo)
+        public JsonResult ReporteDesempIndividual(int nUsuarioId, int nPeriodo, int nPlanOpeId)
         {
-            List<RepDesempIndividual> lsReporte = oReporteAD.ListaRepDesempIndividual(nUsuarioId, nPeriodo);
+            List<RepDesempIndividual> lsReporte = oReporteAD.ListaRepDesempIndividual(nUsuarioId, nPeriodo, nPlanOpeId);
             return Json(JsonConvert.SerializeObject(lsReporte));
         }
 
-        public JsonResult OptenerDesemIndividualValores(int nJefeId, int nColaboradorId, int nPeriodoId)
+        public JsonResult OptenerDesemIndividualValores(int nJefeId, int nColaboradorId, int nPeriodoId, int nPlanOpeId)
         {
-            RepDesempIndiviValores oRepDem = oReporteAD.OptenerDesemIndividualValores(nJefeId, nColaboradorId, nPeriodoId);
+            RepDesempIndiviValores oRepDem = oReporteAD.OptenerDesemIndividualValores(nJefeId, nColaboradorId, nPeriodoId, nPlanOpeId);
             return Json(JsonConvert.SerializeObject(oRepDem));
         }
 
