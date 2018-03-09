@@ -62,10 +62,11 @@ namespace ADSql
             return ls;
         }
 
-        public List<RepAvaFisiCatePre> ListaReporteAvaFisiCatePre(int nPeriodo)
+        public List<RepAvaFisiCatePre> ListaReporteAvaFisiCatePre(int nPeriodo, int nPlanOpeId)
         {
             DbCommand oDbCommand = oDatabase.GetStoredProcCommand(Procedimiento.uspRepAvanceFisicoxCatPresu);
             oDatabase.AddInParameter(oDbCommand, "@nPeriodo", DbType.Int32, nPeriodo);
+            oDatabase.AddInParameter(oDbCommand, "@nPlanOpeId", DbType.Int32, nPlanOpeId);
 
             List<RepAvaFisiCatePre> ls = new List<RepAvaFisiCatePre>();
             using (IDataReader datos = oDatabase.ExecuteReader(oDbCommand))

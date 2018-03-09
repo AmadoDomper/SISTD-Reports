@@ -84,13 +84,16 @@ namespace VisorPub.Controllers
         [ActionName("Reporte-Avance-Fisico-Anual-CatePresu")]
         public ActionResult ReporteAvanceFiscoCatePresu()
         {
-            return View();
+            AvanceInformeAD handlerAvance = new AvanceInformeAD();
+            ReporteViewModel modelo = new ReporteViewModel();
+            modelo.lsPOIs = handlerAvance.ListaPOIVigentesCombo();
+            return View(modelo);
         }
 
         [RequiresAuthenticationAttribute]
-        public JsonResult ListarReporteAvanceFisicoCatePresu(int nPeriodo)
+        public JsonResult ListarReporteAvanceFisicoCatePresu(int nPeriodo, int nPlanOpeId)
         {
-            List<RepAvaFisiCatePre> lsReporte = oReporteAD.ListaReporteAvaFisiCatePre(nPeriodo);
+            List<RepAvaFisiCatePre> lsReporte = oReporteAD.ListaReporteAvaFisiCatePre(nPeriodo, nPlanOpeId);
             return Json(JsonConvert.SerializeObject(lsReporte));
         }
 
@@ -98,7 +101,10 @@ namespace VisorPub.Controllers
         [ActionName("Reporte-Avance-Fisico-Anual-Meta")]
         public ActionResult ReporteAvanceFisicoMeta()
         {
-            return View();
+            AvanceInformeAD handlerAvance = new AvanceInformeAD();
+            ReporteViewModel modelo = new ReporteViewModel();
+            modelo.lsPOIs = handlerAvance.ListaPOIVigentesCombo();
+            return View(modelo);
         }
 
         [RequiresAuthenticationAttribute]

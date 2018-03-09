@@ -97,7 +97,7 @@ $(document).ready(function () {
         });
     }
 
-    CargarGrilla();
+    //CargarGrilla();
 
     $('#frm #ddlPeriodo').change(function () {
         CargarGrilla();
