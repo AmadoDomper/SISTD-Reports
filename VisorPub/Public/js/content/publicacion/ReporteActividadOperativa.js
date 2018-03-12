@@ -1,23 +1,68 @@
 ﻿
 
 $(document).ready(function () {
-
-    $('#frm #ddlMeta').dropdowlist2({
+    $('#frm #ddlplan').dropdowlist2({
         dataShow: 'CText',
         dataValue: 'CValue',
         dataselect: 'CValue',
-        datalist: Model.lsMetas
+        datalist: Model.lsPOIs
     });
 
-    $('#frm #ddlMeta').change(function () {
+
+
+    $('#frm #ddlplan').change(function () {
+
+        var url = $("#listaCombos").val();
+        var nPlanOpeId = $('#frm #ddlplan').val();
+
+        if (nPlanOpeId != "") {
+            $.fn.Conexion({
+                direccion: url,
+                bloqueo: false,
+                datos: { "PlanOperativoId": nPlanOpeId },
+                terminado: function (data) {
+                    data = JSON.parse(data);
+
+                    $('#ddlPeriodo').dropdowlist2({
+                        dataShow: 'CText',
+                        dataValue: 'CValue',
+                        dataselect: 'CValue',
+                        datalist: data.lsPeriodoCale
+                    });
+
+                    $('#frm #ddlMeta').dropdowlist2({
+                        dataShow: 'CText',
+                        dataValue: 'CValue',
+                        dataselect: 'CValue',
+                        datalist: data.lsMetas
+                    });
+
+                }
+            });
+        }
+
+        setTimeout(function () {
+            ListarActvidadOperativa();
+        }, 1000)
+
+        setTimeout(function () {
+            $('#frm #btbuscar').click();
+        }, 1000)
+
+
+    });
+
+    
+    function ListarActvidadOperativa(){
         var nMetaId = $('#frm #ddlMeta').val();
+        var nPlanOpeId = $('#frm #ddlplan').val();
         var url = $("#actOpe").val();
 
         if (nMetaId != "") {
             $.fn.Conexion({
                 direccion: url,
-                bloqueo: true,
-                datos: { "nMetaId": nMetaId },
+                bloqueo: false,
+                datos: { "nMetaId": nMetaId, "nPlanOpeId": nPlanOpeId },
                 terminado: function (data) {
                     $('#btbuscar').prop('disabled', '');
                     var data = JSON.parse(data);
@@ -39,9 +84,19 @@ $(document).ready(function () {
                 }
             });
         }
-        var cLogro = $("#txtLogros").val();
-        var nMetaId = $('#ddlMeta').val();
-        Listar(nMetaId, -1, cLogro);
+
+
+        if ($('#ddlActOpe').val() != null) {
+            setTimeout(function () {
+                $('#frm #btbuscar').click();
+            }, 1000)
+        }
+    }
+
+
+
+    $('#frm #ddlMeta').change(function () {
+        ListarActvidadOperativa();
     });
 
     $('#frm #ddlActOpe').change(function () {
@@ -62,24 +117,27 @@ $(document).ready(function () {
 
         var nMetaId = -1, nActOpeId = -1, cLogro = "";
 
-        if ($('#ddlActOpe').val() != null) {
-             nMetaId = $('#ddlMeta').val();
-             nActOpeId = $('#ddlActOpe').val();
-             cLogro = $("#txtLogros").val();
-        }
-        Listar(nMetaId, nActOpeId, cLogro);
+            if ($('#ddlActOpe').val() != null) {
+                nMetaId = $('#ddlMeta').val();
+                nActOpeId = $('#ddlActOpe').val();
+                cLogro = $("#txtLogros").val();
+            }
+
+
         
+        Listar(nMetaId, nActOpeId, cLogro);
     });
 
     function Listar(nMetaId, nActOpeId, cLogro) {
 
         var url = $("#listBusOpe").val();
         var nPeriodo = $("#ddlPeriodo").val();
+        var nPlanOpeId = $("#ddlplan").val();
 
         $.fn.Conexion({
             direccion: url,
             bloqueo: true,
-            datos: { "nNumMeta": nMetaId, "nInstanciaId": nActOpeId, "cLogro": cLogro, "nPeriodo": nPeriodo },
+            datos: { "nNumMeta": nMetaId, "nInstanciaId": nActOpeId, "cLogro": cLogro, "nPeriodo": nPeriodo, "nPlanOpeId": nPlanOpeId },
             terminado: function (data) {
                 var data = JSON.parse(data);
                 //console.log(data);
@@ -123,8 +181,9 @@ $(document).ready(function () {
         });
     }
 
-    $('#frm #ddlMeta').change();
+    //ListarActvidadOperativa();
     //Listar(-1, -1, "");
+    $('#frm #ddlplan').change();
 
 });
 

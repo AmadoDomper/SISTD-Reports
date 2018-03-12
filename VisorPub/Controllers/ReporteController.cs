@@ -120,16 +120,28 @@ namespace VisorPub.Controllers
         [ActionName("Reporte-Logros-Actividad-Operativa")]
         public ActionResult ReporteActividadOperativa()
         {
+            AvanceInformeAD handlerAvance = new AvanceInformeAD();
             ReporteViewModel modelo = new ReporteViewModel();
-            modelo.lsMetas = oReporteAD.ListarMetas();
+            //modelo.lsMetas = oReporteAD.ListarMetas();
+            modelo.lsPOIs = handlerAvance.ListaPOIVigentesCombo();
             return View(modelo);
+        }
+
+        [RequiresAuthenticationAttribute]
+        public JsonResult ListarLogrosComboxPlanOperativoId(Int32 PlanOperativoId)
+        {
+            ReporteViewModel modelo = new ReporteViewModel();
+
+            modelo.lsMetas = oReporteAD.ListarMetas(PlanOperativoId);
+            modelo.lsPeriodoCale = oReporteAD.ListarPeriodoCalexPlanOperativoId(PlanOperativoId);
+            return Json(JsonConvert.SerializeObject(modelo));
         }
 
 
         [RequiresAuthenticationAttribute]
-        public JsonResult ListaRepBusquedaActividadOperativa(int nNumMeta, int nInstanciaId, string cLogro, int nPeriodo)
+        public JsonResult ListaRepBusquedaActividadOperativa(int nNumMeta, int nInstanciaId, string cLogro, int nPeriodo, int nPlanOpeId)
         {
-            List<RepBusquedaActividaOpe> lsReporte = oReporteAD.ListaRepBusquedaActividadOperativa(nNumMeta, nInstanciaId, cLogro, nPeriodo);
+            List<RepBusquedaActividaOpe> lsReporte = oReporteAD.ListaRepBusquedaActividadOperativa(nNumMeta, nInstanciaId, cLogro, nPeriodo, nPlanOpeId);
             return Json(JsonConvert.SerializeObject(lsReporte));
         }
 
@@ -139,9 +151,9 @@ namespace VisorPub.Controllers
         //    return Json(JsonConvert.SerializeObject(lsMetas));
         //}
 
-        public JsonResult ListarActividadOperativa(int nMetaId)
+        public JsonResult ListarActividadOperativa(int nMetaId, int nPlanOpeId)
         {
-            List<Combo> lsActOpe = oReporteAD.ListarActividadOperativa(nMetaId);
+            List<Combo> lsActOpe = oReporteAD.ListarActividadOperativa(nMetaId, nPlanOpeId);
             return Json(JsonConvert.SerializeObject(lsActOpe));
         }
 

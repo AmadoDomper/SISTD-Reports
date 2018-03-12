@@ -53,6 +53,7 @@
     <Compile Include="RepMonitoreoPOI.cs" />
     <Compile Include="ReporteAEAO.cs" />
     <Compile Include="ReporteEfiCatePre.cs" />
+    <Compile Include="ReporteGraEfiAvaMeta.cs" />
     <Compile Include="Role.cs" />
     <Compile Include="Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

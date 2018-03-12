@@ -109,13 +109,14 @@ namespace ADSql
             return ls;
         }
 
-        public List<RepBusquedaActividaOpe> ListaRepBusquedaActividadOperativa(int nNumMeta, int nInstanciaId, string cLogro, int nPeriodo)
+        public List<RepBusquedaActividaOpe> ListaRepBusquedaActividadOperativa(int nNumMeta, int nInstanciaId, string cLogro, int nPeriodo, int nPlanOpeId)
         {
             DbCommand oDbCommand = oDatabase.GetStoredProcCommand(Procedimiento.uspRepBusquedaActividadOperativa);
             oDatabase.AddInParameter(oDbCommand, "@nNumMeta", DbType.Int32, nNumMeta);
             oDatabase.AddInParameter(oDbCommand, "@nInstanciaId", DbType.Int32, nInstanciaId);
             oDatabase.AddInParameter(oDbCommand, "@cLogro", DbType.String, cLogro);
             oDatabase.AddInParameter(oDbCommand, "@nPeriodo", DbType.Int32, nPeriodo);
+            oDatabase.AddInParameter(oDbCommand, "@nPlanOpeId", DbType.Int32, nPlanOpeId);
 
             List<RepBusquedaActividaOpe> ls = new List<RepBusquedaActividaOpe>();
             using (IDataReader datos = oDatabase.ExecuteReader(oDbCommand))
@@ -123,9 +124,9 @@ namespace ADSql
                 while (datos.Read())
                 {
                     RepBusquedaActividaOpe item = new RepBusquedaActividaOpe();
-                    item.InstanciaId = DataUtil.DbValueToDefault<int>(datos[datos.GetOrdinal("InstanciaId")]);
+                    item.InstanciaId = DataUtil.DbValueToDefault<int>(datos[datos.GetOrdinal("DetalleDeInstanciaDeMetaId")]);
                     item.cMeta = DataUtil.DbValueToDefault<string>(datos[datos.GetOrdinal("cMeta")]);
-                    item.Nombre = DataUtil.DbValueToDefault<String>(datos[datos.GetOrdinal("Nombre")]);
+                    item.Nombre = DataUtil.DbValueToDefault<String>(datos[datos.GetOrdinal("Id")]);
                     item.cLogro1 = DataUtil.DbValueToDefault<String>(datos[datos.GetOrdinal("cLogro")]);
                     item.AvanceFisico = DataUtil.DbValueToDefault<int>(datos[datos.GetOrdinal("AvanceFisico")]);
                     item.Color = DataUtil.DbValueToDefault<string>(datos[datos.GetOrdinal("Color")]);
@@ -135,9 +136,11 @@ namespace ADSql
             return ls;
         }
 
-        public List<Combo> ListarMetas()
+        public List<Combo> ListarMetas(int nPlanOpeId)
         {
             DbCommand oDbCommand = oDatabase.GetStoredProcCommand(Procedimiento.uspListarMetas);
+            oDatabase.AddInParameter(oDbCommand, "@nPlanOpeId", DbType.Int32, nPlanOpeId);
+
             List<Combo> ls = new List<Combo>();
             using (IDataReader datos = oDatabase.ExecuteReader(oDbCommand))
             {
@@ -151,10 +154,12 @@ namespace ADSql
             }
             return ls;
         }
-        public List<Combo> ListarActividadOperativa(int nMetaId)
+        public List<Combo> ListarActividadOperativa(int nMetaId, int nPlanOpeId)
         {
             DbCommand oDbCommand = oDatabase.GetStoredProcCommand(Procedimiento.uspListarActividadOperativa);
             oDatabase.AddInParameter(oDbCommand, "@nMetaId", DbType.Int32, nMetaId);
+            oDatabase.AddInParameter(oDbCommand, "@nPlanOpeId", DbType.Int32, nPlanOpeId);
+
             List<Combo> ls = new List<Combo>();
             using (IDataReader datos = oDatabase.ExecuteReader(oDbCommand))
             {
