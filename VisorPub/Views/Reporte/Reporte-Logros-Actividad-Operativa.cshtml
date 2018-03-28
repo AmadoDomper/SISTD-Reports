@@ -79,6 +79,13 @@
                         <input type="button" class="btn btn-primary btn-block btn-fill" value="Buscar" id="btbuscar" name="btbuscar" style="margin-top: 25px;">
                     </div>
                 </div>
+                <div class="col-md-1">
+                    <div class="form-group">
+                        <button id="btnExportar" style="margin-top: 25px;" type="button" class="btn btn-success">
+                            <span class="glyphicon glyphicon glyphicon-save-file" aria-hidden="true"></span> Exportar
+                        </button>
+                    </div>
+                </div>
             </div>  
                 <div class="row">
                     <div class="col-md-12">
@@ -92,6 +99,7 @@
 @Html.Hidden("actOpe", Url.Action("ListarActividadOperativa", "Reporte"))
 @Html.Hidden("listBusOpe", Url.Action("ListaRepBusquedaActividadOperativa", "Reporte"))
 @Html.Hidden("listaCombos", Url.Action("ListarLogrosComboxPlanOperativoId", "Reporte"))
+@Html.Hidden("GetExcelReporteLogrosActividadOperativa", Url.Action("GetExcelReporteLogrosActividadOperativa", "Reporte"))
 
 
 

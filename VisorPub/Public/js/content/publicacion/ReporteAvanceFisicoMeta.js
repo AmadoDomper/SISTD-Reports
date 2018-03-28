@@ -101,4 +101,20 @@ $(document).ready(function () {
         CargarGrilla();
     });
 
+    $("#btnExportar").bind("click", function () {
+        var cUrl, nPlanId, cPlan, nPeriodo, cPeriodo;
+
+        cUrl = $("#GetExcelReporteAvanceFisicoAnualMeta").val();
+        nPlanId = encodeURIComponent($("#ddlplan").val());
+        nPeriodo = encodeURIComponent($("#ddlPeriodo").val());
+        cPeriodo = $("#ddlPeriodo option:selected").html();
+        cPlan = $("#ddlplan option:selected").html();
+
+        cPlan = cPlan.substring(cPlan.indexOf("[") + 1, cPlan.indexOf("]"));
+        cPlan = encodeURIComponent(cPlan);
+        cPeriodo = encodeURIComponent(cPeriodo);
+
+        window.location.href = cUrl + "?PlanOperativoId=" + nPlanId + "&nPeriodo=" + nPeriodo + "&cPlan=" + cPlan + "&cPeriodo=" + cPeriodo;
+    });
+
 });

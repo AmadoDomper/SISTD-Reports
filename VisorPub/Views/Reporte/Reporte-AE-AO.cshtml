@@ -42,6 +42,13 @@
                         <input type="button" class="btn btn-primary btn-block btn-fill" value="Buscar" id="btbuscar" name="btbuscar" style="margin-top: 25px;">
                     </div>
                 </div>
+                <div class="col-md-1">
+                    <div class="form-group">
+                        <button id="btnExportar" style="margin-top: 25px;" type="button" class="btn btn-success">
+                            <span class="glyphicon glyphicon glyphicon-save-file" aria-hidden="true"></span> Exportar
+                        </button>
+                    </div>
+                </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
@@ -54,6 +61,7 @@
 
 @Html.Hidden("listarActividadEstrategica", Url.Action("ListarAExPlanOperativoId", "Reporte"))
 @Html.Hidden("listaRepActOpe", Url.Action("ListaRepActividadOpe", "Reporte"))
+@Html.Hidden("GetExcelReporteAEAO", Url.Action("GetExcelReporteAEAO", "Reporte"))
 
 <!--Pagina controlador de vista-->
 <script src="~/Public/js/content/publicacion/ReporteAEAO.js"></script>

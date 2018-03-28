@@ -121,5 +121,23 @@ $(document).ready(function () {
     $('#frm #ddlAcEst').change();
     //Listar(-1, -1, "");
 
+
+    $("#btnExportar").bind("click", function () {
+        var cUrl, nPlanId, cPlan, nPeriodo, cPeriodo,nActEst;
+
+        cUrl = $("#GetExcelReporteAEAO").val();
+        nPlanId = encodeURIComponent($("#ddlplan").val());
+        nPeriodo = encodeURIComponent($("#ddlPeriodo").val());
+        nActEst = encodeURIComponent($("#ddlAcEst").val());
+        cPeriodo = $("#ddlPeriodo option:selected").html();
+        cPlan = $("#ddlplan option:selected").html();
+
+        cPlan = cPlan.substring(cPlan.indexOf("[") + 1, cPlan.indexOf("]"));
+        cPlan = encodeURIComponent(cPlan);
+        cPeriodo = encodeURIComponent(cPeriodo);
+
+        window.location.href = cUrl + "?nAEId=" + nActEst + "&nPlanOpeId=" + nPlanId + "&nPeriodo=" + nPeriodo + "&cPlan=" + cPlan + "&cPeriodo=" + cPeriodo;
+    });
+
 });
 

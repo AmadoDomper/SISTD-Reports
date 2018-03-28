@@ -185,5 +185,30 @@ $(document).ready(function () {
     //Listar(-1, -1, "");
     $('#frm #ddlplan').change();
 
+
+    $("#btnExportar").bind("click", function () {
+        var cUrl, nPlanId, cPlan, nPeriodo, cPeriodo, nMetaId = -1, nActOpeId = -1, cLogro = "";
+
+        cUrl = $("#GetExcelReporteLogrosActividadOperativa").val();
+        nPlanId = encodeURIComponent($("#ddlplan").val());
+        nPeriodo = encodeURIComponent($("#ddlPeriodo").val());
+        cPeriodo = $("#ddlPeriodo option:selected").html();
+        cPlan = $("#ddlplan option:selected").html();
+
+        cPlan = cPlan.substring(cPlan.indexOf("[") + 1, cPlan.indexOf("]"));
+        cPlan = encodeURIComponent(cPlan);
+        cPeriodo = encodeURIComponent(cPeriodo);
+
+
+        if ($('#ddlActOpe').val() != null) {
+            nMetaId = encodeURIComponent($('#ddlMeta').val());
+            nActOpeId = encodeURIComponent($('#ddlActOpe').val());
+            cLogro = encodeURIComponent($("#txtLogros").val());
+        }
+
+        window.location.href = cUrl + "?nNumMeta=" + nMetaId + "&nInstanciaId=" + nActOpeId + "&cLogro=" + cLogro + "&nPeriodo=" + nPeriodo + "&nPlanOpeId=" + nPlanId + "&cPlan=" + cPlan + "&cPeriodo=" + cPeriodo;
+    });
+
+
 });
 

@@ -53,6 +53,10 @@
     box-sizing: border-box;
 }
 
+td.jsgrid-cell{
+    white-space:pre-line;
+}
+
 .jsgrid-align-left {
     text-align: left;
 }

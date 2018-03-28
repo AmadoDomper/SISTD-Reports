@@ -179,7 +179,7 @@
 
         $.fn.Conexion({
             direccion : url,
-            bloqueo: true,
+            bloqueo: false,
             datos: { "nUsuarioId": _nUsuarioId, "nPeriodo": _nPeriodo, "nPlanOpeId": _nPlanOpeId},
             terminado: function (data) {
                 data = JSON.parse(data);

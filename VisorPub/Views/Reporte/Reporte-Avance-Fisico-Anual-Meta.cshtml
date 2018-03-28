@@ -54,6 +54,13 @@
                         <select class="form-control" id="ddlPeriodo" name="ddlPeriodo" required></select>
                     </div>
                 </div>
+                <div class="col-md-1">
+                    <div class="form-group">
+                        <button id="btnExportar" style="margin-top: 25px;" type="button" class="btn btn-success">
+                            <span class="glyphicon glyphicon glyphicon-save-file" aria-hidden="true"></span> Exportar
+                        </button>
+                    </div>
+                </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
@@ -66,6 +73,7 @@
 
 @Html.Hidden("myUrl", Url.Action("ListarReporteAvanceFisicoMeta", "Reporte"))
 @Html.Hidden("listaPeriodo", Url.Action("ListarPeriodoCalendario", "Reporte"))
+@Html.Hidden("GetExcelReporteAvanceFisicoAnualMeta", Url.Action("GetExcelReporteAvanceFisicoAnualMeta", "Reporte"))
 
 <!--Pagina controlador de vista-->
 <script src="~/Public/js/content/publicacion/ReporteAvanceFisicoMeta.js"></script>

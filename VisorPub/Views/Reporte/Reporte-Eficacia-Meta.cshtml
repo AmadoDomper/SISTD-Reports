@@ -8,28 +8,26 @@
 <script type="text/javascript" src="~/Public/js/jsgrid.js"></script>
 
 <style type="text/css">
-.Azul td:nth-child(4){
-    background-color: #5d5dff;
-}
+        .Azul td:nth-child(4) {
+            background-color: #5d5dff;
+        }
 
-.Amarillo td:nth-child(4){
-    background-color: #ffff51;
-}
+        .Amarillo td:nth-child(4) {
+            background-color: #ffff51;
+        }
 
-.Verde td:nth-child(4){
-    background-color: #15ab15;
-}
+        .Verde td:nth-child(4) {
+            background-color: #15ab15;
+        }
 
-.Rojo td:nth-child(4) {
-    background-color: #fd2929;
-}
-
-
-/*.my-row-custom-class td:nth-child(2) {
-    background: red;
-}*/
+        .Rojo td:nth-child(4) {
+            background-color: #fd2929;
+        }
 
 
+        /*.my-row-custom-class td:nth-child(2) {
+        background: red;
+    }*/
 </style>
 
 
@@ -58,6 +56,13 @@
                         <select class="form-control" id="ddlPeriodo" name="ddlPeriodo" required></select>
                     </div>
                 </div>
+                <div class="col-md-1">
+                    <div class="form-group">
+                        <button id="btnExportar" style="margin-top: 25px;" type="button" class="btn btn-success">
+                            <span class="glyphicon glyphicon glyphicon-save-file" aria-hidden="true"></span> Exportar
+                        </button>
+                    </div>
+                </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
@@ -70,6 +75,7 @@
 
 @Html.Hidden("myUrl", Url.Action("ReporteEficaciaMetaLista", "Reporte"))
 @Html.Hidden("listaPeriodo", Url.Action("ListarPeriodoCalendario", "Reporte"))
+@Html.Hidden("GetExcelReporteEficaciaMeta", Url.Action("GetExcelReporteEficaciaMeta", "Reporte"))
 
 <!--Pagina controlador de vista-->
 <script src="~/Public/js/content/publicacion/ReporteEficaciaMeta.js"></script>
